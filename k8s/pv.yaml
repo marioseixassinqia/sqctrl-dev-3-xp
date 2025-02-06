@@ -1,0 +1,167 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-config
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/config
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-data
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/data
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-exports
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/exports
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-filesportal
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/filesportal
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-https
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/https
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-imports
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/imports
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-public
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/public
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-shared
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/shared
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-upload
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/upload
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqctrl-pv-web-xml
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: premium-rwo
+  hostPath:
+    path: /sqctrl/drive/web-xml
