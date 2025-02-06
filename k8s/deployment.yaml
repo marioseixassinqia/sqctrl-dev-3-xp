@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqctrl-deployment
+  namespace: sqfaas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqctrl
+  template:
+    metadata:
+      labels:
+        app: sqctrl
+    spec:
+      securityContext:
+        fsGroup: 1000  # Permite ao Kubernetes manipular arquivos nos volumes
+      containers:
+        - name: sqctrl-container
+          image: us-east1-docker.pkg.dev/prj-sqfaas-dev/sqfaas-dev/sqctrl/driveamnet:967p0b59-tomcat9-jre21-jre11libs.842
+          resources:
+            requests:
+              memory: "0"
+              cpu: "0"
+            limits:
+              memory: "512Mi"
+              cpu: "512m"
+          volumeMounts:
+            - name: sqctrl-config
+              mountPath: /sqctrl/drive/config
+            - name: sqctrl-data
+              mountPath: /sqctrl/drive/data
+            - name: sqctrl-exports
+              mountPath: /sqctrl/drive/exports
+            - name: sqctrl-filesportal
+              mountPath: /sqctrl/drive/filesportal
+            - name: sqctrl-https
+              mountPath: /sqctrl/drive/https
+            - name: sqctrl-imports
+              mountPath: /sqctrl/drive/imports
+            - name: sqctrl-public
+              mountPath: /sqctrl/drive/public
+            - name: sqctrl-shared
+              mountPath: /sqctrl/drive/shared
+            - name: sqctrl-upload
+              mountPath: /sqctrl/drive/upload
+            - name: sqctrl-web-xml
+              mountPath: /sqctrl/drive/web-xml
+          envFrom:
+            - configMapRef:
+                name: sqctrl-config
+      volumes:
+        - name: sqctrl-config
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-config
+        - name: sqctrl-data
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-data
+        - name: sqctrl-exports
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-exports
+        - name: sqctrl-filesportal
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-filesportal
+        - name: sqctrl-https
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-https
+        - name: sqctrl-imports
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-imports
+        - name: sqctrl-public
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-public
+        - name: sqctrl-shared
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-shared
+        - name: sqctrl-upload
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-upload
+        - name: sqctrl-web-xml
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-web-xml
