@@ -1,10 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: sqctrl
-  name: sqctrl
-  namespace: staging1
+  name: sqctrl-deployment
+  namespace: sqfaas
 spec:
   replicas: 1
   selector:
@@ -15,81 +13,70 @@ spec:
       labels:
         app: sqctrl
     spec:
+      securityContext:
+        fsGroup: 1000  # Permite ao Kubernetes manipular arquivos nos volumes
       containers:
-      - envFrom:
-        - configMapRef:
-            name: sqctrl-configmap
-        image: sinqiainterno.azurecr.io/fundos/sqctrl/controladoriacustodia:9.68af
-        imagePullPolicy: Always
-        name: sqctrl
-        ports:
-        - containerPort: 8080
-        - containerPort: 8443
-        - containerPort: 9010
-        - containerPort: 9090
-        - containerPort: 8000
-        volumeMounts:
-        - mountPath: /opt/certs
-          name: truststore
-          readOnly: true
-        - mountPath: /usr/local/sqctrl/config
-          name: sqctrl-config
-        - mountPath: /usr/local/sqctrl/data
-          name: sqctrl-data
-        - mountPath: /usr/local/sqctrl/exports
-          name: sqctrl-exports
-        - mountPath: /usr/local/sqctrl/imports
-          name: sqctrl-imports
-        - mountPath: /usr/local/sqctrl/shared
-          name: sqctrl-shared
-        - mountPath: /usr/local/sqctrl/upload
-          name: sqctrl-upload
-        - mountPath: /usr/local/sqctrl/filesportal
-          name: sqctrl-filesportal
-      hostAliases:
-      - hostnames:
-        - kc.staging1.sqfaas.in
-        - bff.staging1.sqfaas.in
-        - staging1.sqfaas.in
-        ip: 10.140.133.172
-      imagePullSecrets:
-      - name: acr-secret
-      tolerations:
-      - effect: NoExecute
-        key: node.kubernetes.io/unreachable
-        operator: Exists
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/control-plane
-        operator: Exists
+        - name: sqctrl-container
+          image: us-east1-docker.pkg.dev/prj-sqfaas-dev/sqfaas-dev/sqctrl/driveamnet:967p0b59-tomcat9-jre21-jre11libs.842
+          resources:
+            requests:
+              memory: "0"
+              cpu: "0"
+            limits:
+              memory: "512Mi"
+              cpu: "512m"
+          volumeMounts:
+            - name: sqctrl-config
+              mountPath: /sqctrl/drive/config
+            - name: sqctrl-data
+              mountPath: /sqctrl/drive/data
+            - name: sqctrl-exports
+              mountPath: /sqctrl/drive/exports
+            - name: sqctrl-filesportal
+              mountPath: /sqctrl/drive/filesportal
+            - name: sqctrl-https
+              mountPath: /sqctrl/drive/https
+            - name: sqctrl-imports
+              mountPath: /sqctrl/drive/imports
+            - name: sqctrl-public
+              mountPath: /sqctrl/drive/public
+            - name: sqctrl-shared
+              mountPath: /sqctrl/drive/shared
+            - name: sqctrl-upload
+              mountPath: /sqctrl/drive/upload
+            - name: sqctrl-web-xml
+              mountPath: /sqctrl/drive/web-xml
+          envFrom:
+            - configMapRef:
+                name: sqctrl-config
       volumes:
-      - name: truststore
-        secret:
-          secretName: secrets-files
-      - hostPath:
-          path: /opt/k8s-volumes/sqctrl/staging1/config/
-          type: Directory
-        name: sqctrl-config
-      - hostPath:
-          path: /opt/k8s-volumes/sqctrl/staging1/data/
-          type: Directory
-        name: sqctrl-data
-      - hostPath:
-          path: /opt/k8s-volumes/sqctrl/staging1/exports/
-          type: Directory
-        name: sqctrl-exports
-      - hostPath:
-          path: /opt/k8s-volumes/sqctrl/staging1/imports/
-          type: Directory
-        name: sqctrl-imports
-      - hostPath:
-          path: /opt/k8s-volumes/sqctrl/staging1/shared/
-          type: Directory
-        name: sqctrl-shared
-      - hostPath:
-          path: /opt/k8s-volumes/sqctrl/staging1/upload/
-          type: Directory
-        name: sqctrl-upload
-      - hostPath:
-          path: /opt/k8s-volumes/sqctrl/staging1/filesportal/
-          type: Directory
-        name: sqctrl-filesportal
+        - name: sqctrl-config
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-config
+        - name: sqctrl-data
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-data
+        - name: sqctrl-exports
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-exports
+        - name: sqctrl-filesportal
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-filesportal
+        - name: sqctrl-https
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-https
+        - name: sqctrl-imports
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-imports
+        - name: sqctrl-public
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-public
+        - name: sqctrl-shared
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-shared
+        - name: sqctrl-upload
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-upload
+        - name: sqctrl-web-xml
+          persistentVolumeClaim:
+            claimName: sqctrl-pvc-web-xml
