@@ -4,17 +4,23 @@ metadata:
   name: sqctrl-ingress
   namespace: sqfaas
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: "/"  
-    nginx.ingress.kubernetes.io/ingress.class: nginx-private  
+       nginx.ingress.kubernetes.io/rewrite-target: "/"
+      #nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
+  ingressClassName: nginx-private
+  tls:
+    - hosts:
+      - sqctrl.sqfaas.dev
+      secretName: ingress-tls
   rules:
-    - host: sqctrl.sqfaas.dev  
+    - host: sqctrl.sqfaas.dev
       http:
         paths:
-          - path: /frontend  
-            pathType: Prefix  
+          - path: /frontend
+            pathType: Prefix
             backend:
               service:
                 name: sqctrl-service
                 port:
-                  name: http  
+                  name: http
