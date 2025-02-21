@@ -11,8 +11,8 @@ spec:
   ingressClassName: nginx-private
   tls:
     - hosts:
-      - sqctrl.sqfaas.dev
-      secretName: ingress-tls
+      - sqfaas.dev
+      secretName: ingress-tls-new
   rules:
     - host: sqctrl.sqfaas.dev
       http:
